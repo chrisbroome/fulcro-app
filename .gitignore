@@ -1,0 +1,11 @@
+# build stuff
+.clj-kondo/
+.cpcache/
+.idea/
+.lsp/
+.shadow-cljs/
+node_modules
+resources/public/js/
+
+# generated stuff
+/fulcro-app.iml
