@@ -6,15 +6,23 @@
     [com.fulcrologic.fulcro.algorithms.merge :as merge]))
 
 (defsc Car [this {:car/keys [id model] :as props}]
-  {:query [:car/id :car/model]
-   :ident :car/id}
+  {:query         [:car/id :car/model]
+   :ident         :car/id
+   :initial-state {:car/id    :param/id
+                   :car/model :param/model}}
   (dom/div "Model: " model))
 
 (def ui-car (comp/factory Car {:keyfn :car/id}))
 
 (defsc Person [this {:person/keys [id name age cars] :as props}]
-  {:query [:person/id :person/name :person/age {:person/cars (comp/get-query Car)}]
-   :ident :person/id}
+  {:query         [:person/id :person/name :person/age {:person/cars (comp/get-query Car)}]
+   :ident         :person/id
+   :initial-state {:person/id   :param/id
+                   :person/name :param/name
+                   :person/age  20
+                   :person/cars [{:id 40 :model "Tacoma"}
+                                 {:id 41 :model "Escort"}
+                                 {:id 42 :model "F-150"}]}}
   (dom/div
     (dom/div "Name: " name)
     (dom/div "Age: " age)
@@ -26,9 +34,11 @@
 (defonce APP (app/fulcro-app))
 
 (defsc Sample [this {:root/keys [person]}]
-  {:query [{:root/person (comp/get-query Person)}]}
+  {:query         [{:root/person (comp/get-query Person)}]
+   :initial-state {:root/person {:id 1 :name "Bob"}}}
   (dom/div
-    (ui-person person)))
+    (when person
+      (ui-person person))))
 
 (defn ^:export init []
   (app/mount! APP Sample "app"))
@@ -36,8 +46,5 @@
 (comment
   (reset! (::app/state-atom APP) {})
 
-  (merge/merge-component! APP Person {:person/id 3
-                                      :person/age 25})
-  (app/current-state APP)
-  (app/schedule-render! APP)
+  (comp/get-initial-state Sample)
 )
