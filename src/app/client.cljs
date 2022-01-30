@@ -1,14 +1,19 @@
 (ns app.client
   (:require
+    ["react-number-format" :as NumberFormat]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
     [com.fulcrologic.fulcro.dom :as dom :refer [div h3 ul li label button]]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]
+    [com.fulcrologic.fulcro.algorithms.react-interop :as interop]
     [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]))
 
 (defmutation make-older [{:person/keys [id]}]
   (action [{:keys [state]}]
           (swap! state update-in [:person/id id :person/age] inc)))
+
+(def ui-number-format (interop/react-factory NumberFormat))
+
 
 (defsc Car [this {:car/keys [id model] :as props}]
   {:query         [:car/id :car/model]
@@ -36,6 +41,10 @@
             (div :.field
                  (label "Age: ")
                  age)
+            (div :.field
+                 (label "Amount: ")
+                 (ui-number-format {:thousandSeparator true
+                                    :prefix "$"}))
             (h3 "Cars")
             (ul (map ui-car cars)))))
 
