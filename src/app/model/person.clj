@@ -40,4 +40,9 @@
   (swap! people update-in [id ::age] inc)
   {})
 
-(def resolvers [person-resolver all-people-resolver make-older])
+(pc/defmutation
+  select-person [env {::keys [id]}]
+  {::pc/input [::id]}
+  {::id id})
+
+(def resolvers [person-resolver all-people-resolver make-older select-person])
