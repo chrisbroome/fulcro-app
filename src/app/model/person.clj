@@ -14,6 +14,15 @@
             ::age  26
             ::cars #{1}}}))
 
+(comment
+  (swap! people assoc-in [1 ::age] 22)
+  (swap! people assoc-in [1 ::name] "Bob")
+  (swap! people assoc-in [1 ::age] 99)
+  (swap! people assoc-in [1 ::name] "Tony")
+  (swap! people update 1 dissoc ::age)
+  @people
+  )
+
 (pc/defresolver
   person-resolver [env {::keys [id]}]
   {::pc/input  #{::id}

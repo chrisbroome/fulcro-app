@@ -87,7 +87,7 @@
 
 (defonce APP
          (app/fulcro-app
-           {:optimized-render! ior/render!
+           {#_#_:optimized-render! ior/render!
             :remotes           {:remote (http/fulcro-http-remote {})}
             :client-did-mount  (fn [app]
                                  (df/load! app :all-people PersonListItem
@@ -96,3 +96,10 @@
 
 (defn ^:export init []
   (app/mount! APP Root "app"))
+
+(comment
+
+  (df/load! APP [:app.model.person/id 1] PersonDetail)
+  (comp/get-query PersonListItem)
+
+  )
