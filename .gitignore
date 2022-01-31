@@ -9,3 +9,4 @@ resources/public/js/
 
 # generated stuff
 /fulcro-app.iml
+.nrepl-port
