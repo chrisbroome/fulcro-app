@@ -1,14 +1,14 @@
-{:paths ["src" "resources"]
-
- :deps {com.fulcrologic/fulcro {:mvn/version "3.5.13"}
-        ring/ring-core {:mvn/version "1.9.4"}
-        http-kit/http-kit {:mvn/version "2.5.3"}
-        com.wsscode/pathom {:mvn/version "2.2.31"}}
+{:paths   ["src" "resources"]
+ :deps    {com.fulcrologic/fulcro {:mvn/version "3.6.3"}
+           com.wsscode/pathom     {:mvn/version "2.4.0"}
+           http-kit/http-kit      {:mvn/version "2.6.0"}
+           org.clojure/clojure    {:mvn/version "1.11.1"}
+           ring/ring-core         {:mvn/version "1.10.0"}}
 
  :aliases {:dev {:extra-paths ["dev"]
-                 :extra-deps {org.clojure/clojurescript {:mvn/version "1.11.4"}
-                              org.clojure/tools.namespace {:mvn/version "1.2.0"}
-                              thheller/shadow-cljs {:mvn/version "2.16.12"}
-                              binaryage/devtools {:mvn/version "1.0.4"}
-                              com.taoensso/timbre {:mvn/version "5.1.1"}}}}
-}
+                 :extra-deps  {binaryage/devtools          {:mvn/version "1.0.7"}
+                               com.taoensso/timbre         {:mvn/version "6.1.0"}
+                               org.clojure/clojurescript   {:mvn/version "1.11.60"}
+                               org.clojure/tools.namespace {:mvn/version "1.4.4"}
+                               thheller/shadow-cljs        {:mvn/version "2.23.3"}}}}
+ }

@@ -1,8 +1,6 @@
 (ns app.model.person
   (:require
-    [clojure.spec.alpha :as s]
-    [com.wsscode.pathom.connect :as pc]
-    [taoensso.timbre :as log]))
+    [com.wsscode.pathom.connect :as pc]))
 
 (def people
   (atom {1 {::id   1

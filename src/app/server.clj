@@ -10,7 +10,7 @@
     [ring.middleware.not-modified :refer [wrap-not-modified]]
     [ring.middleware.resource :refer [wrap-resource]]))
 
-(def my-resolvers [car/resolvers person/resolvers])
+(def my-resolvers (into [] (concat car/resolvers person/resolvers)))
 
 ;; setup for a given connect system
 (def parser

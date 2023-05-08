@@ -1,8 +1,10 @@
 # build stuff
+.calva/
 .clj-kondo/
 .cpcache/
 .idea/
 .lsp/
+.portal/
 .shadow-cljs/
 node_modules
 resources/public/js/

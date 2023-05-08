@@ -1,21 +1,21 @@
 (ns app.client
-  (:require
-    [app.model.person :refer [make-older picker-path select-person]]
-    [com.fulcrologic.fulcro.application :as app]
-    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
-    [com.fulcrologic.fulcro.data-fetch :as df]
-    [com.fulcrologic.fulcro.dom :as dom :refer [a div h3 ul li label button]]
-    [com.fulcrologic.fulcro.networking.http-remote :as http]
-    [com.fulcrologic.fulcro.rendering.ident-optimized-render :as ior]))
+  (:require [app.model.person :refer [make-older select-person]]
+            [com.fulcrologic.fulcro.application :as app]
+            [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
+            [com.fulcrologic.fulcro.data-fetch :as df]
+            [com.fulcrologic.fulcro.dom :refer [a button div h3 label li ul]]
+            [com.fulcrologic.fulcro.networking.http-remote :as http]
+            [com.fulcrologic.fulcro.react.version18 :refer [with-react18]]
+            ["react-dom/client" :as dom-client]))
 
-(defsc Car [this {:app.model.car/keys [id model] :as props}]
+(defsc Car [_ {:app.model.car/keys [model]}]
   {:query [:app.model.car/id :app.model.car/model]
    :ident :app.model.car/id}
   (div "Model: " model))
 
 (def ui-car (comp/factory Car {:keyfn :app.model.car/id}))
 
-(defsc PersonDetail [this {:app.model.person/keys [id name age cars] :as props}]
+(defsc PersonDetail [this {:app.model.person/keys [id name age cars]}]
   {:query [:app.model.person/id
            :app.model.person/name
            :app.model.person/age
@@ -53,7 +53,7 @@
 
 (def ui-person-list-item (comp/factory PersonListItem {:keyfn :app.model.person/id}))
 
-(defsc PersonList [this {:person-list/keys [people]}]
+(defsc PersonList [_ {:person-list/keys [people]}]
   {:query         [{:person-list/people (comp/get-query PersonListItem)}]
    :ident         (fn [_ _] [:component/id ::person-list])
    :initial-state {:person-list/people []}}
@@ -64,7 +64,7 @@
 
 (def ui-person-list (comp/factory PersonList))
 
-(defsc PersonPicker [this {:person-picker/keys [list selected-person]}]
+(defsc PersonPicker [_ {:person-picker/keys [list selected-person]}]
   {:query         [{:person-picker/list (comp/get-query PersonList)}
                    {:person-picker/selected-person (comp/get-query PersonDetail)}]
    :initial-state {:person-picker/list {}}
@@ -78,7 +78,7 @@
 
 (def ui-person-picker (comp/factory PersonPicker {:keyfn :person-picker/people}))
 
-(defsc Root [this {:root/keys [person-picker]}]
+(defsc Root [_ {:root/keys [person-picker]}]
   {:query         [{:root/person-picker (comp/get-query PersonPicker)}]
    :initial-state {:root/person-picker {}}}
   (div :.ui.container.segment
@@ -86,13 +86,12 @@
        (ui-person-picker person-picker)))
 
 (defonce APP
-         (app/fulcro-app
-           {#_#_:optimized-render! ior/render!
-            :remotes           {:remote (http/fulcro-http-remote {})}
-            :client-did-mount  (fn [app]
-                                 (df/load! app :all-people PersonListItem
-                                           {:target [:component/id ::person-list :person-list/people]})
-                                 )}))
+         (-> (app/fulcro-app
+               {:remotes          {:remote (http/fulcro-http-remote {})}
+                :client-did-mount (fn [app]
+                                    (df/load! app :all-people PersonListItem
+                                              {:target [:component/id ::person-list :person-list/people]}))})
+             (with-react18)))
 
 (defn ^:export init []
   (app/mount! APP Root "app"))
@@ -100,6 +99,4 @@
 (comment
 
   (df/load! APP [:app.model.person/id 1] PersonDetail)
-  (comp/get-query PersonListItem)
-
-  )
+  (comp/get-query PersonListItem))
