@@ -19,6 +19,8 @@
   (swap! people assoc-in [1 ::name] "Tony")
   (swap! people update 1 dissoc ::age)
   @people
+
+  (mapv (fn [i] [{::id i}]) (keys @people))
   )
 
 (pc/defresolver
@@ -38,7 +40,7 @@
   all-people-resolver [env {}]
   {::pc/output [{:all-people [::id]}]}
   {:all-people
-   (mapv (fn [i] {::id i}) (keys @people))})
+   (mapv (fn [i] [{::id i}]) (keys @people))})
 
 (pc/defmutation
   make-older [env {::keys [id]}]
@@ -52,4 +54,5 @@
   {::pc/input [::id]}
   {::id id})
 
-(def resolvers [person-resolver all-people-resolver make-older select-person])
+(def resolvers [person-resolver all-people-resolver])
+(def mutations [make-older select-person])

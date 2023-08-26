@@ -1,7 +1,7 @@
 (ns user
   (:require
     [org.httpkit.server :as http]
-    [app.server :refer [middleware my-resolvers]]
+    [app.server :refer [middleware]]
     [clojure.tools.namespace.repl :as tools-ns]
     [taoensso.timbre :as log]))
 
@@ -30,5 +30,5 @@
   (restart)
   (stop)
   @server
-  my-resolvers
+
   )

@@ -10,12 +10,14 @@ npm install
 
 # install clj deps
 clj
-
-# start shadow-cljs and then web interface at http://localhost:9630/ to make sure it's working
-shadow-cljs start
 ```
 
 ## Start a REPL
+
+```bash
+# start shadow-cljs server and then connect to the web interface at http://localhost:9630/ to make sure it's working
+shadow-cljs server
+```
 
 Connect to the running shadow cljs repl at port 9000 (IDE specific). Type the following to switch into cljs mode:
 
